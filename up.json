@@ -1,0 +1,154 @@
+{
+  "Version": "1.1.0",
+  "LastUpdated": "2025-11-29 20:23:00",
+  "ChangeLog": "新增DPC_WATCHDOG_VIOLATION错误支持，优化内存诊断命令",
+  "ErrorPatterns": [
+    {
+      "Pattern": "CRITICAL_PROCESS_DIED",
+      "Type": "SystemProcess",
+      "Description": "关键系统进程终止"
+    },
+    {
+      "Pattern": "SYSTEM_THREAD_EXCEPTION_NOT_HANDLED",
+      "Type": "Driver",
+      "Description": "系统线程异常未处理"
+    },
+    {
+      "Pattern": "IRQL_NOT_LESS_OR_EQUAL",
+      "Type": "Driver",
+      "Description": "中断请求级别错误"
+    },
+    {
+      "Pattern": "PAGE_FAULT_IN_NONPAGED_AREA",
+      "Type": "Memory",
+      "Description": "内存页面错误"
+    },
+    {
+      "Pattern": "KERNEL_SECURITY_CHECK_FAILURE",
+      "Type": "Security",
+      "Description": "内核安全检查失败"
+    },
+    {
+      "Pattern": "MEMORY_MANAGEMENT",
+      "Type": "Memory",
+      "Description": "内存管理错误"
+    },
+    {
+      "Pattern": "DRIVER_IRQL_NOT_LESS_OR_EQUAL",
+      "Type": "Driver",
+      "Description": "驱动程序IRQL错误"
+    },
+    {
+      "Pattern": "SYSTEM_SERVICE_EXCEPTION",
+      "Type": "SystemService",
+      "Description": "系统服务异常"
+    },
+    {
+      "Pattern": "DPC_WATCHDOG_VIOLATION",
+      "Type": "Driver",
+      "Description": "DPC看门狗超时"
+    },
+    {
+      "Pattern": "0x",
+      "Type": "Hexadecimal",
+      "Description": "十六进制错误代码"
+    }
+  ],
+  "RepairStrategies": [
+    {
+      "ErrorCode": "CRITICAL_PROCESS_DIED",
+      "Description": "关键系统进程意外终止",
+      "UserMessage": "系统关键进程异常终止，可能由于系统文件损坏或软件冲突",
+      "RepairCommands": [
+        {
+          "Type": "PowerShell",
+          "Command": "sfc /scannow",
+          "Description": "扫描并修复系统文件"
+        },
+        {
+          "Type": "PowerShell",
+          "Command": "DISM /Online /Cleanup-Image /RestoreHealth",
+          "Description": "修复Windows映像"
+        },
+        {
+          "Type": "CMD",
+          "Command": "chkdsk C: /f /r",
+          "Description": "检查并修复磁盘错误"
+        }
+      ]
+    },
+    {
+      "ErrorCode": "SYSTEM_THREAD_EXCEPTION_NOT_HANDLED",
+      "Description": "系统线程异常未处理",
+      "UserMessage": "驱动程序或系统组件引发未处理的异常",
+      "RepairCommands": [
+        {
+          "Type": "CMD",
+          "Command": "chkdsk C: /f /r",
+          "Description": "检查并修复磁盘错误"
+        },
+        {
+          "Type": "PowerShell",
+          "Command": "Get-WindowsDriver -Online | Where-Object {$_.ProviderName -ne 'Microsoft'} | ForEach-Object { pnputil /delete-driver $_.Driver $_.OriginalFileName /uninstall }",
+          "Description": "卸载非Microsoft驱动程序"
+        }
+      ]
+    },
+    {
+      "ErrorCode": "MEMORY_MANAGEMENT",
+      "Description": "内存管理错误",
+      "UserMessage": "检测到内存管理问题，可能由故障内存条或驱动程序引起",
+      "RepairCommands": [
+        {
+          "Type": "CMD",
+          "Command": "mdsched.exe",
+          "Description": "运行Windows内存诊断工具"
+        },
+        {
+          "Type": "PowerShell",
+          "Command": "sfc /scannow",
+          "Description": "扫描系统文件完整性"
+        }
+      ]
+    },
+    {
+      "ErrorCode": "DPC_WATCHDOG_VIOLATION",
+      "Description": "DPC看门狗超时",
+      "UserMessage": "通常是驱动程序或硬件兼容性问题导致",
+      "RepairCommands": [
+        {
+          "Type": "PowerShell",
+          "Command": "Update-WindowsDriver -Online -All",
+          "Description": "更新所有驱动程序"
+        },
+        {
+          "Type": "CMD",
+          "Command": "bcdedit /set disabledynamictick yes",
+          "Description": "禁用动态时钟中断"
+        }
+      ]
+    },
+    {
+      "ErrorCode": "GENERAL_SYSTEM_REPAIR",
+      "Description": "通用系统修复",
+      "UserMessage": "执行常规系统维护和修复",
+      "RepairCommands": [
+        {
+          "Type": "PowerShell",
+          "Command": "sfc /scannow",
+          "Description": "扫描并修复受保护的系统文件"
+        },
+        {
+          "Type": "PowerShell",
+          "Command": "DISM /Online /Cleanup-Image /RestoreHealth",
+          "Description": "修复Windows系统映像"
+        },
+        {
+          "Type": "CMD",
+          "Command": "chkdsk C: /f /r",
+          "Description": "检查磁盘完整性"
+        }
+      ]
+    }
+  ]
+}
