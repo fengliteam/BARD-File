@@ -1,6 +1,7 @@
 {
-  "name": "bsdr",
+  "name": "bsrd",
   "assets": {
     "directory": "./"
-  }
+  },
+  "compatibility_date": "2025-11-30"
 }
