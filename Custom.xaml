@@ -1,0 +1,17 @@
+<local:MyCard Title="PixelCube 服务器" Margin="0,0,0,15" CanSwap="False">
+    <StackPanel Margin="25,40,23,15">
+        <TextBlock TextWrapping="Wrap" Margin="0,0,0,5" FontSize="14" FontWeight="Bold"
+                   Text="欢迎使用 PixelCube 服务器" HorizontalAlignment="Center"/>
+        <TextBlock TextWrapping="Wrap" Margin="0,0,0,20" Foreground="{DynamicResource ColorBrush5}"
+                   Text="服务器信息已在设置中预置，直接启动即可" HorizontalAlignment="Center"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+            <local:MyButton Width="160" Height="38" ColorType="Highlight"
+                            Text="注册账号" 
+                            EventType="打开网页" 
+                            EventData="https://www.abright.us.ci/"
+                            ToolTip="点击打开注册页面，创建你的 PixelCube 账号"/>
+        </StackPanel>
+        <local:MyHint Margin="0,15,0,0" Theme="Blue"
+                      Text="温馨提示：本服务器已预置第三方登录，启动时无需选择版本和登录方式，直接点击启动游戏即可。"/>
+    </StackPanel>
+</local:MyCard>
