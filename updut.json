@@ -1,6 +1,5 @@
 {
-  "versionCode": 1,
-  "versionName": "381.50",
+  "versionName": "1.0.0",
   "downloadUrl": "https://example.com/PCL-PixelCube-2.3.4.zip",
   "changelog": "初始版本"
   "force": false,
