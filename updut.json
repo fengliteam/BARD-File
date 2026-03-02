@@ -1,7 +1,7 @@
 {
   "versionName": "1.0.0",
   "downloadUrl": "https://example.com/PCL-PixelCube-2.3.4.zip",
-  "changelog": "初始版本"
+  "changelog": "初始版本",
   "force": false,
   "timestamp": "2026-03-02T12:00:00Z"
 }
